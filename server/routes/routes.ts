@@ -5,11 +5,11 @@ const crudService = new CrudService();
 
 export class Routes {
     public routes(app: any): void {
-        app.route('/')
-        .get((req: Request, res: Response) => {
-            console.log(new Date(), 'redirecting from main page');
-            res.redirect('/users');
-        });
+        // app.route('/')
+        // .get((req: Request, res: Response) => {
+        //     console.log(new Date(), 'redirecting from main page');
+        //     res.redirect('/users');
+        // });
 
         app.route('/api/users')
         .get(crudService.getUsers);

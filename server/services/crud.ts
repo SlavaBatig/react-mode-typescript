@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 
 export class CrudService {
     public async getUser(req: Request, res: Response) {
+        console.log(new Date(), 'in /user/: get');
         try {
             const user = await User.findById(req.params.id).lean().exec();
             res.json({
@@ -20,6 +21,7 @@ export class CrudService {
     }
 
     public async updateUser(req: Request, res: Response) {
+        console.log(new Date(), 'in /user/: put');
         try {
             const { body } = req;
             const user = await User.findByIdAndUpdate(req.params.id, body, {new: true}).lean().exec();
@@ -38,6 +40,7 @@ export class CrudService {
     }
 
     public async deleteUser(req: Request, res: Response) {
+        console.log(new Date(), 'in /user/: delete');
         try {
             const user = await User.findByIdAndDelete(req.params.id).lean().exec();
             res.json({
@@ -65,6 +68,28 @@ export class CrudService {
             console.log(err);
             res.json({
                 message: 'Erorr while searching for users',
+                result: 'FAIL'
+            });
+        }
+    }
+
+    public async addUser(req: Request, res: Response) {
+        console.log(new Date(), 'in /user');
+        const { email, name } = req.body;
+        try {
+            const user = new User({
+                email: email,
+                name: name ? name : '',
+            });
+            const u = user.save();
+            res.json({
+                message: 'User successfully saved',
+                result: 'OK'
+            });
+        } catch (err) {
+            console.log(err);
+            res.json({
+                message: `${email} is taken`,
                 result: 'FAIL'
             });
         }
